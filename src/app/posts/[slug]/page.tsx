@@ -9,7 +9,7 @@ type TDetailedPost = Omit<TPost, "categories"> & {
 };
 type TPostResponse = TDetailedPost | TErrNotFound;
 
-const getPost = async (slug: string): TPostResponse => {
+const getPost = async (slug: string): Promise<TPostResponse> => {
   const postId = parseInt(slug.split("-").slice(-1)[0], 10);
 
   if (Number.isNaN(postId)) {
@@ -44,7 +44,7 @@ const getPost = async (slug: string): TPostResponse => {
 export default async function Page({ params }: { params: { slug: string } }) {
   const postOrError = await getPost(params.slug);
 
-  if (postOrError.error) return <p>Post not found.</p>;
+  if ((postOrError as TErrNotFound).error) return <p>Post not found.</p>;
 
   const { imageUrl, title, categories, excerpt } = postOrError as TDetailedPost;
 
@@ -68,7 +68,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </Link>
           ))}
         </div>
-        <h2 className="flex mb-2 text-black dark:text-slate-300 text-base font-bold">{title}</h2>
+        <h2 className="flex mb-2 text-black dark:text-slate-300 text-base font-bold">
+          {title}
+        </h2>
         <p className="text-gray-500 dark:text-slate-400">{excerpt}</p>
       </div>
     </div>

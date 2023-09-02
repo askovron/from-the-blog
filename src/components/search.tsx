@@ -9,9 +9,12 @@ export const SearchPosts = () => {
   return (
     <form
       className="flex mb-16 relative"
-      onSubmit={(e) => {
+      onSubmit={(e: React.SyntheticEvent) => {
         e.preventDefault();
-        const nextSearchValue = e.target.search.value;
+        const target = e.target as typeof e.target & {
+          search: { value: string };
+        };
+        const nextSearchValue = target.search.value;
         const url = new URL(window.location.origin + window.location.pathname);
 
         for (const [key, value] of searchParams.entries()) {
