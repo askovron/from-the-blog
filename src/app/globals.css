@@ -8,11 +8,17 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+@layer components {
+  .button {
+    @apply px-4 py-1 border dark:border-slate-300 bg-amber-800 shadow-xl rounded text-slate-100 dark:text-slate-300 opacity-80 hover:opacity-100 dark:bg-amber-950;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-end-rgb: 35, 39, 47;
   }
 }
 
