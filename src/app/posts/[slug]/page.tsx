@@ -1,7 +1,7 @@
 import fs from "fs/promises";
-import { TCategory, TPost } from "@/types/all";
 import Image from "next/image";
 import Link from "next/link";
+import { TCategory, TPost } from "@/types/all";
 
 type TErrNotFound = { error: string };
 type TDetailedPost = Omit<TPost, "categories"> & {

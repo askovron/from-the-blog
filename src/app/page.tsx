@@ -18,8 +18,7 @@ async function getPostsCategories(input: TInputParams): Promise<TResponseData> {
   }
 
   const response = await fetch(
-    `${process.env.HOST}/simple?${params.toString()}`,
-    { next: { revalidate: 1 } }
+    `${process.env.HOST}/simple?${params.toString()}`
   );
 
   if (!response.ok) {
