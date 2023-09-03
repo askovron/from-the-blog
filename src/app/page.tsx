@@ -83,7 +83,7 @@ export default async function Home({
 
         <PostList posts={posts} categories={categories} />
 
-        <p className="flex mt-4 w-full px-5 xl:mt-12">
+        <p className="flex my-5 lg:mb-0 lg:mt-4  xl:mt-12 w-full px-5">
           {hasPrev ? (
             <Link
               className="mr-auto button"
@@ -121,8 +121,8 @@ export default async function Home({
               : categoryCssClassesDefault
           }`}
         >
-          <h2 className={`text-2xl font-semibold`}>
-            All categories{" "}
+          <h2 className="text-2xl font-semibold whitespace-nowrap">
+            All&nbsp;categories&nbsp;
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -141,8 +141,8 @@ export default async function Home({
                 : categoryCssClassesDefault
             }`}
           >
-            <h2 className={`text-2xl font-semibold`}>
-              {name} {}
+            <h2 className="text-2xl font-semibold whitespace-nowrap">
+              {name}&nbsp;
               <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
                 -&gt;
               </span>

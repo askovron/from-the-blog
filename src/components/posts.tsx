@@ -16,12 +16,12 @@ export const PostList: FC<{ posts: TPost[]; categories: TCategory[] }> = ({
   }
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       {posts.map(
         ({ id, title, imageUrl, excerpt, slug, categories: categoryIds }) => (
           <Link
             key={id}
-            className="flex flex-col border dark:border-none bg-white dark:bg-slate-900 w-[250px] mx-5 rounded shadow-xl hover:translate-y-[-4px] transition-transform translate-z-360 subpixel-antialiased overflow-hidden"
+            className="flex flex-col border dark:border-none bg-white dark:bg-slate-900 w-[250px] my-3 lg:mx-5 rounded shadow-xl hover:translate-y-[-4px] transition-transform translate-z-360 subpixel-antialiased overflow-hidden"
             href={`/posts/${slug}-${id}`}
           >
             <div className="h-[190px] w-full relative">

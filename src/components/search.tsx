@@ -8,7 +8,7 @@ export const SearchPosts = () => {
 
   return (
     <form
-      className="flex mb-16 relative"
+      className="flex mb-5 lg:mb-16 relative"
       onSubmit={(e: React.SyntheticEvent) => {
         e.preventDefault();
         const target = e.target as typeof e.target & {
