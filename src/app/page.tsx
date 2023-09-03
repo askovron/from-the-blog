@@ -11,7 +11,7 @@ type TInputParams = {
   to?: string;
 };
 
-export const PAGE_SIZE = 3;
+const PAGE_SIZE = 3;
 
 async function filterByCategory(posts: TPost[], categoryId?: number) {
   if (typeof categoryId === "number" && !Number.isNaN(categoryId)) {
