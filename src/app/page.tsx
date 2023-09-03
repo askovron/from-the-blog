@@ -1,31 +1,62 @@
-import { PAGE_SIZE } from "./simple/route";
+import fs from "fs/promises";
 import Link from "next/link";
 import { SearchPosts } from "@/components/search";
-import { TResponseData } from "@/types/all";
+import { TResponseData, TPost } from "@/types/all";
 import { PostList } from "@/components/posts";
 
 type TInputParams = {
   search?: string;
-  categoryId?: number;
-  from?: number;
-  to?: number;
+  category?: string;
+  from?: string;
+  to?: string;
 };
 
-async function getPostsCategories(input: TInputParams): Promise<TResponseData> {
-  const params = new URLSearchParams();
-  for (const [key, value] of Object.entries(input)) {
-    params.set(key, value.toString());
+export const PAGE_SIZE = 3;
+
+async function filterByCategory(posts: TPost[], categoryId?: number) {
+  if (typeof categoryId === "number" && !Number.isNaN(categoryId)) {
+    return posts.filter(({ categories }) => categories.includes(categoryId));
   }
 
-  const response = await fetch(
-    `${process.env.HOST}/simple?${params.toString()}`
+  return posts;
+}
+
+async function filterByName(posts: TPost[], filterStr?: string) {
+  if (!filterStr) return posts;
+
+  return posts.filter(
+    ({ title, excerpt }) =>
+      title.includes(filterStr) || excerpt.includes(filterStr)
   );
+}
 
-  if (!response.ok) {
-    throw new Error("Api error.");
+async function getPostsCategories(input: TInputParams): Promise<TResponseData> {
+  const from = input.from ? parseInt(input.from, 10) : 0;
+  const category = input.category ? parseInt(input.category, 10) : undefined;
+
+  try {
+    const fileContents = await fs.readFile(
+      process.cwd() + "/blog.json",
+      "utf8"
+    );
+
+    const { posts: rawPosts, categories } = JSON.parse(fileContents);
+
+    const posts = await filterByCategory(rawPosts, category).then((posts) =>
+      filterByName(posts, input.search)
+    );
+    const hasNext = posts.length - (from + PAGE_SIZE) > 0;
+    const hasPrev = from > 0;
+
+    return {
+      categories,
+      posts: posts.slice(from, from + PAGE_SIZE),
+      hasNext,
+      hasPrev,
+    };
+  } catch (e) {
+    throw new Error("Error during reading file.");
   }
-
-  return response.json();
 }
 
 export default async function Home({
@@ -52,7 +83,7 @@ export default async function Home({
 
         <PostList posts={posts} categories={categories} />
 
-        <p className="flex mt-4 w-full px-5 xl:mt-16">
+        <p className="flex mt-4 w-full px-5 xl:mt-12">
           {hasPrev ? (
             <Link
               className="mr-auto button"
